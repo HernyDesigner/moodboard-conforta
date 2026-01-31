@@ -138,7 +138,41 @@ document.addEventListener('DOMContentLoaded', () => {
     initNav();
     checkHash(); // Check hash before first updateView
     updateView();
-    
+
     // Add transition for title fade
     titleElement.style.transition = 'opacity 0.2s ease';
+
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector('.slides-wrapper');
+    const slides = document.querySelectorAll('.moodboard');
+    const navButtons = document.querySelectorAll('.nav-arrow, .chevron'); // Ajusta '.nav-arrow' a la clase real de tus flechas
+
+    // Función que ajusta la altura
+    function updateHeight() {
+        const activeSlide = document.querySelector('.moodboard.active');
+        if (activeSlide && wrapper) {
+            // Obtenemos la altura real del contenido activo
+            const height = activeSlide.offsetHeight;
+            // Se la aplicamos al padre
+            wrapper.style.height = `${height}px`;
+        }
+    }
+
+    // 1. Ejecutar al cargar la página (con un pequeño retraso para asegurar carga de imágenes)
+    setTimeout(updateHeight, 100);
+    window.addEventListener('load', updateHeight);
+
+    // 2. Ejecutar cuando cambiamos el tamaño de la ventana
+    window.addEventListener('resize', updateHeight);
+
+    // 3. Integrar con tus botones de navegación existentes
+    // (Esto es un "observador": vigila si la clase 'active' cambia en algún moodboard)
+    const observer = new MutationObserver(updateHeight);
+
+    slides.forEach(slide => {
+        observer.observe(slide, { attributes: true, attributeFilter: ['class'] });
+    });
 });
