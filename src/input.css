@@ -127,7 +127,7 @@ body {
     pointer-events: none;
     transition: opacity 0.6s ease-in-out;
     z-index: 0;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 .moodboard.active {
@@ -288,5 +288,25 @@ body {
 
     .bento-grid {
         padding-bottom: 70px;
+    }
+
+    /* Especial para la Cotización: No fixear el footer en mobile */
+    .moodboard[data-style*="Cotización"] .moodboard-footer {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        padding: 20px 0;
+        background: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        border-top: none;
+    }
+
+    .moodboard[data-style*="Cotización"] .moodboard-footer .footer-content {
+        max-height: none;
+        overflow-y: visible;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-soft);
+        padding: 30px 20px;
     }
 }
