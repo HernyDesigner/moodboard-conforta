@@ -104,7 +104,8 @@ body {
     margin: 40px auto;
     padding: 0 80px;
     /* Space for arrows */
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 80px);
+    /* Adjusted to reduce huge gap at bottom if content is short */
     display: flex;
     align-items: flex-start;
     justify-content: center;
@@ -113,7 +114,7 @@ body {
 .slides-wrapper {
     position: relative;
     width: 100%;
-    min-height: 600px;
+    /* min-height removed to allow content to dictate height */
 }
 
 /* Moodboard transition logic */
@@ -179,22 +180,19 @@ body {
 }
 
 /* Footer */
-.moodboard-footer textarea {
+.moodboard-footer .footer-content {
     width: 100%;
     min-height: 100px;
     padding: 20px;
-    border: none;
     background: #fff;
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-soft);
     font-family: inherit;
     font-size: 1rem;
-    resize: vertical;
-    outline: none;
     transition: box-shadow 0.3s ease;
 }
 
-.moodboard-footer textarea:focus {
+.moodboard-footer .footer-content:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 
@@ -304,13 +302,15 @@ body {
         border-top: 1px solid rgba(0, 0, 0, 0.05);
     }
 
-    .moodboard-footer textarea {
+    .moodboard-footer .footer-content {
         min-height: auto;
-        height: 50px;
+        /* Adapt to content but limit height */
+        max-height: 150px;
+        overflow-y: auto;
         border-radius: 25px;
         padding: 12px 20px;
         font-size: 14px;
-        resize: none;
+        background: #fff;
     }
 
     /* Add padding to grid so content isn't covered by footer */
