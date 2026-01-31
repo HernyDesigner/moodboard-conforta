@@ -283,4 +283,38 @@ body {
     .next-btn {
         right: 10px;
     }
+
+    /* Fixed Footer for Mobile */
+    .moodboard,
+    .moodboard.active {
+        transform: none;
+        /* Disable transform so fixed position works relative to viewport */
+    }
+
+    .moodboard-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 200;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        padding: 15px 20px;
+        box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .moodboard-footer textarea {
+        min-height: auto;
+        height: 50px;
+        border-radius: 25px;
+        padding: 12px 20px;
+        font-size: 14px;
+        resize: none;
+    }
+
+    /* Add padding to grid so content isn't covered by footer */
+    .bento-grid {
+        padding-bottom: 70px;
+    }
 }
