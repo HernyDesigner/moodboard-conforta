@@ -92,7 +92,8 @@ body {
 
 @media (max-width: 768px) {
     .scrollspy-nav {
-        display: none; /* Hide on mobile for now as per simple mobile design */
+        display: none;
+        /* Hide on mobile for now as per simple mobile design */
     }
 }
 
@@ -258,7 +259,7 @@ body {
 
     /* Stack Masonry Grid */
     .bento-grid {
-        column-count: 1;
+        column-count: 2;
     }
 
     /* Small arrows at bottom or side? 
