@@ -3,8 +3,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.querySelector('.prev-btn');
     const nextBtn = document.querySelector('.next-btn');
     const titleElement = document.getElementById('moodboard-title');
+    const navContainer = document.getElementById('scrollspy-nav');
 
     let currentIndex = 0;
+
+    // Helper: Create URL-friendly slug
+    function createSlug(text) {
+        return text.toLowerCase()
+            .replace(/\s+\+\s+/g, '-') // Replace " + " with "-"
+            .replace(/\s+/g, '-')      // Replace other spaces
+            .replace(/[^a-z0-9-]/g, ''); // Remove special chars
+    }
+
+    // Helper: Generates a short display label for the nav
+    function createNavLabel(styleText) {
+        // Example: "minimalista + ambiental" -> "Ambiental"
+        // We assume the first part "minimalista" is common, so we take the second part if available
+        const parts = styleText.split('+');
+        if (parts.length > 1) {
+            return parts[1].trim().charAt(0).toUpperCase() + parts[1].trim().slice(1);
+        }
+        return styleText.charAt(0).toUpperCase() + styleText.slice(1);
+    }
+
+    // Initialize Scrollspy Nav
+    function initNav() {
+        if (!navContainer) return;
+
+        slides.forEach((slide, index) => {
+            const style = slide.getAttribute('data-style');
+            const slug = createSlug(style);
+            const label = createNavLabel(style);
+
+            // Create Link
+            const link = document.createElement('a');
+            link.href = `#${slug}`;
+            link.className = 'scrollspy-link';
+            link.textContent = label;
+            link.setAttribute('data-index', index);
+
+            // Handle Click
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                goToSlide(index);
+            });
+
+            navContainer.appendChild(link);
+        });
+    }
 
     function updateView() {
         // Reset all slides
@@ -26,22 +72,56 @@ document.addEventListener('DOMContentLoaded', () => {
             titleElement.innerHTML = `<b>Moodboard:</b> ${styleName} para ${clientName}`;
             titleElement.style.opacity = 1;
         }, 200);
+
+        // Update URL Hash without jumping
+        const slug = createSlug(styleName);
+        history.replaceState(null, null, `#${slug}`);
+
+        // Update Nav Active State
+        updateNavState(slug);
+    }
+
+    function updateNavState(currentSlug) {
+        const links = document.querySelectorAll('.scrollspy-link');
+        links.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${currentSlug}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    function goToSlide(index) {
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+        currentIndex = index;
+        updateView();
     }
 
     function nextSlide() {
-        currentIndex++;
-        if (currentIndex >= slides.length) {
-            currentIndex = 0;
-        }
-        updateView();
+        goToSlide(currentIndex + 1);
     }
 
     function prevSlide() {
-        currentIndex--;
-        if (currentIndex < 0) {
-            currentIndex = slides.length - 1;
+        goToSlide(currentIndex - 1);
+    }
+
+    // Check URL Hash on Load
+    function checkHash() {
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+            let foundIndex = -1;
+            slides.forEach((slide, index) => {
+                const slug = createSlug(slide.getAttribute('data-style'));
+                if (slug === hash) {
+                    foundIndex = index;
+                }
+            });
+
+            if (foundIndex !== -1) {
+                currentIndex = foundIndex;
+            }
         }
-        updateView();
     }
 
     // Event Listeners
@@ -55,7 +135,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize
+    initNav();
+    checkHash(); // Check hash before first updateView
     updateView();
+    
     // Add transition for title fade
     titleElement.style.transition = 'opacity 0.2s ease';
 });

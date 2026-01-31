@@ -63,6 +63,39 @@ body {
     text-align: center;
 }
 
+/* Scrollspy Nav */
+.scrollspy-nav {
+    position: absolute;
+    right: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.scrollspy-link {
+    text-decoration: none;
+    color: #999;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+}
+
+.scrollspy-link:hover {
+    color: var(--text-color);
+}
+
+.scrollspy-link.active {
+    color: var(--text-color);
+    border-bottom-color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .scrollspy-nav {
+        display: none; /* Hide on mobile for now as per simple mobile design */
+    }
+}
+
 /* Main Slider */
 .slider-container {
     position: relative;
